@@ -1,41 +1,50 @@
 from inventory import Inventory
 from product_manager import ProductManager
+from product import Product
 
 
 class Basket(ProductManager):
     sm_inv = Inventory()
+
     def __init__(self):
         super().__init__()
+        self.__products = super().get_products()
 
     def get_products(self):
         return super().get_products()
 
-    def find_product(self, product):
-        if product not in Basket.sm_inv:
-            return False
-        return super().find_product(product)
+    def find_product_index(self, prod):
+        return super().find_product_index(prod)
 
-    def add_new_product(self, product):
-        if product not in Basket.sm_inv:
+    def find_product(self, prod):
+        return super().find_product(prod)
+
+    def add_product(self, prod):
+        if Basket.sm_inv.find_product(prod) == -1:
             return
-        if Basket.sm_inv[product.get_id()].get_amount() == 0:
+        if Basket.sm_inv.get_products()[Basket.sm_inv.find_product_index(prod)].get_amount() == 0:
             return
-        super().add_new_product(product)
+        if Basket.sm_inv.get_products()[Basket.sm_inv.find_product_index(prod)].get_amount() < prod.get_amount():
+            max_prod = Product(prod.get_item(), Basket.sm_inv.get_products()[Basket.sm_inv.find_product_index(prod)].get_amount())
+            self.__products.append(max_prod)
+            Basket.sm_inv.remove_product(prod)
+            return
+        super().add_product(prod)
+        Basket.sm_inv.get_products()[Basket.sm_inv.find_product(prod)].set_amount(Basket.sm_inv.get_products()[Basket.sm_inv.find_product(prod)].get_amount() - prod.get_amount())
 
-    def change_product_amount(self, product, amount):
-        super().change_product_amount(product, Basket.sm_inv[product.get_item().get_id()].amount - amount)
-        if Basket.sm_inv[product.get_item().get_id()].set_amount() is not None: #check if its negative. if its not - it wont enter the if statement and wont reset a bunch of unwanted things
-            super().change_product_amount(product, amount - Basket.sm_inv[product.get_item().get_id()].get_amount())
-            Basket.sm_inv[product.get_item().get_id()].set_amount(0)
-        else:
-            super().change_product_amount(product, amount)
+    def remove_product(self, prod):
+        super().remove_product(prod)
+        if Basket.sm_inv.find_product == -1:
+            sm.add_product(prod)
+            return
+        num = Basket.sm_inv.get_products()[find_product_index(prod)].get_amount()
+        Basket.sm_inv.get_products()[find_product_index(prod)].set_amount(num + prod.get_amount())
 
-    def remove_product(self, product):
-        super().change_product_amount(product, product.get_amount())
-        super().remove_product(product)
-
-    def check_out(self):
+    def calc_total_price(self):
         total = 0
-        for i in range(len(self.get_products())):
-            total += self.get_products()[i].calc_price()
+        for i in range(len(self.__products)):
+            total += self.__products[i].calc_price()
         return total
+
+    def __str__(self):
+        return "basket contains: \n" + super().__str__()

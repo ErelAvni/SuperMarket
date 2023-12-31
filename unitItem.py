@@ -8,6 +8,9 @@ class UnitItem(Item):
     def get_price(self):
         return super().get_price()
 
+    def get_name(self):
+        return super().get_name()
+
     def get_id(self):
         return super().get_id()
 

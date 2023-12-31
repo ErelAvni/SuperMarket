@@ -14,6 +14,12 @@ class Item(ABC):
     def get_price(self):
         return self.__base_price
 
+    def get_name(self):
+        return self.__name
+
+    def set_price(self, price):
+        self.__base_price = price
+
     def get_id(self):
         return self.__id
 

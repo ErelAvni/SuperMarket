@@ -5,19 +5,22 @@ from product_manager import ProductManager
 class Inventory(ProductManager):
     def __init__(self):
         super().__init__()
+        self.__products = super().get_products()
 
     def get_products(self):
         return super().get_products()
 
-    def find_product(self, product):
-        return super().find_product(product)
+    def find_product_index(self, prod):
+        return super().find_product_index(prod)
 
-    def add_new_product(self, product):
-        super().add_new_product(product)
+    def find_product(self, prod):
+        return super().find_product(prod)
 
-    def change_product_amount(self, product, amount):
-        super().change_product_amount(product, amount)
+    def add_product(self, prod):
+        super().add_product(prod)
 
-    def remove_product(self, product):
-        super().remove_product(product)
-        super().change_product_amount(product, 0)
+    def remove_product(self, prod):
+        super().remove_product(prod)
+
+    def __str__(self):
+        return "Supermarket inventory contains: \n" + super().__str__()
